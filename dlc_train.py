@@ -1,4 +1,5 @@
 import sys
+import os
 import deeplabcut
 
 """ train deeplabcut on Sherlock (~6hrs on GPU for 200,000 iterations)
@@ -16,11 +17,15 @@ path_config_file : string
 	path to the config.yaml file containing project params
 
 """
-# import vars and check path
-path_config_file = sys.argv[1]
-if not os.path.exists(path_config_file):
-    raise ValueError('no config file at %s' %path_config_file)
 
-# train the network
-deeplabcut.create_training_dataset(path_config_file, windows2linux=True)
-deeplabcut.train_network(path_config_file, gputouse=1, max_snapshots_to_keep=5)
+def run_program(path_config_file):
+	# import vars and check path
+	if not os.path.exists(path_config_file):
+	    raise ValueError('no config file at %s' %path_config_file)
+
+	# train the network
+	deeplabcut.create_training_dataset(path_config_file, windows2linux=True)
+	deeplabcut.train_network(path_config_file, gputouse=1, max_snapshots_to_keep=5)
+
+if __name__ == "__main__":
+	run_program(sys.argv[1])
